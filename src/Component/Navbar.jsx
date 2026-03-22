@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { HiMenu, HiX } from "react-icons/hi";
 
 const Navbar = () => {
-    const [activeLink,setActiveLink] =useState('#home')
-    const[isMenuOpen,setIsMenuOpen]=useState(false)
+  const [activeLink, setActiveLink] = useState("#home");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navLinks = [
     { href: "#home", label: "Home" },
@@ -21,26 +22,75 @@ const Navbar = () => {
           <div className="w-4 h-4 bg-red-500 -ml-2 rounded-full opacity-100 hover:opacity-75 transition-opacity duration-300"></div>
         </div>
 
-        {/* Desktop Nav Items */}
-        <div className="hidden md:flex items-center gap-10 ">
+        {/* Mobile Menu Button */}
+        <button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="md:hidden p-2"
+        >
+          {isMenuOpen ? (
+            <HiX className="size-6" />
+          ) : (
+            <HiMenu className="size-6" />
+          )}
+        </button>
+
+        {/* Desktop Nav */}
+        <div className="hidden md:flex items-center gap-10">
           {navLinks.map((link, index) => (
             <a
               key={index}
               href={link.href}
-              onClick={()=>setActiveLink(link.href)}
-              className={`text-sm font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 hover:after:w-full after:bg-blue-600 after:transition-all ${activeLink === link.href ? "text-blue-600 after:w-full": "text-gray-600 hover:text-gray-900"}`}
+              onClick={() => setActiveLink(link.href)}
+              className={`text-sm font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 hover:after:w-full after:bg-blue-600 after:transition-all ${
+                activeLink === link.href
+                  ? "text-blue-600 after:w-full"
+                  : "text-gray-600 hover:text-gray-900"
+              }`}
             >
               {link.label}
             </a>
           ))}
         </div>
 
-        {/* get in touch btn */}
-        <button className="hidden md:block bg-blue-600 text-white px-6 py-2.5 rounded-lg hover:bg-blue-700 text-sm font-medium transition-all hover:shadow-lg">
-            <a href="#newsLatter">Get in touch</a>
-        </button>
+        {/* Desktop Button */}
+        <a
+          href="#newsLatter"
+          className="hidden md:block bg-blue-600 text-white px-6 py-2.5 rounded-lg hover:bg-blue-700 text-sm font-medium transition-all hover:shadow-lg"
+        >
+          Get in touch
+        </a>
 
       </div>
+
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div className="md:hidden bg-white border-t border-gray-200 px-4 py-4 space-y-4">
+          {navLinks.map((link, index) => (
+            <a
+              key={index}
+              href={link.href}
+              onClick={() => {
+                setActiveLink(link.href);
+                setIsMenuOpen(false);
+              }}
+              className={`block text-sm font-medium ${
+                activeLink === link.href
+                  ? "text-blue-600"
+                  : "text-gray-600"
+              }`}
+            >
+              {link.label}
+            </a>
+          ))}
+
+          <a
+            href="#newsLatter"
+            className="block bg-blue-600 text-white text-center px-6 py-2.5 rounded-lg"
+          >
+            Get in touch
+          </a>
+        </div>
+      )}
     </nav>
   );
 };
